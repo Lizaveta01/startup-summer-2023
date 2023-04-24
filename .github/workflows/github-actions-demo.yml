@@ -16,8 +16,8 @@ jobs:
     - name: install modules
       run: npm install
     - name: build project
-      run: nom run build
+      run: npm run build
     - name: lint code
-      run: nom run lint
+      run: npm run lint
     - name: prepare husky code
-      run: nom run prepare
+      run: npm run prepare
