@@ -4,6 +4,7 @@ import {BrowserRouter} from 'react-router-dom';
 
 import {App} from '@app';
 import {em, MantineProvider} from '@mantine/core';
+import {responsiveWidth} from './utils/responsiveWidth';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLDivElement);
 root.render(
@@ -45,6 +46,23 @@ root.render(
                   root: {
                     lineHeight: em('140%'),
                     fontSize: em(28),
+                  },
+                }),
+              },
+            },
+            Button: {
+              sizes: {
+                s: () => ({
+                  root: {
+                    padding: `${responsiveWidth(9.5)} ${responsiveWidth(20)}`,
+                  },
+                }),
+
+                m: (theme) => ({
+                  root: {
+                    fontSize: '1.75rem',
+                    height: '5rem',
+                    padding: theme.spacing.xl,
                   },
                 }),
               },
