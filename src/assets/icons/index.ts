@@ -1,4 +1,6 @@
+import ArrowIcon from './ArrowIcon';
+import CancelIcon from './CancelIcon';
 import LocationIcon from './LocationIcon';
 import StarIcon from './StarIcon';
 
-export {LocationIcon, StarIcon};
+export {ArrowIcon, CancelIcon, LocationIcon, StarIcon};

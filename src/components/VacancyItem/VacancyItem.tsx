@@ -62,6 +62,7 @@ const useStyles = createStyles((theme) => ({
     position: 'absolute',
     right: responsiveWidth(24),
     top: responsiveWidth(24),
+    cursor: 'pointer',
   },
 }));
 
