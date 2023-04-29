@@ -1,25 +1,22 @@
-import React from 'react';
+import {VacancyItem} from '@components';
+import {Flex} from '@mantine/core';
 
-import {NotFoundComponent} from '@components';
-import {createStyles, Flex, Text} from '@mantine/core';
-import {responsiveWidth} from '@utils';
+const HEADER_HEIGHT = 84;
+const DESIGN_EXAMPLE_WINDOW_HEIGHT = 900;
 
 const HomePage = () => {
-  const {classes} = useStyles();
   return (
-    <Flex justify="center" align="center" bg="gray.1" h={`${100 - (84 / 900) * 100}vh`}>
-      <NotFoundComponent />
+    <Flex
+      justify="center"
+      align="center"
+      bg="gray.1"
+      h={`${100 - (HEADER_HEIGHT / DESIGN_EXAMPLE_WINDOW_HEIGHT) * 100}vh`}>
+      <Flex></Flex>
+      <Flex>
+        <VacancyItem />
+      </Flex>
     </Flex>
   );
 };
-
-const useStyles = createStyles((theme) => ({
-  wrapper: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100vh',
-    backgroundColor: theme.colors.gray[1],
-  },
-}));
 
 export default HomePage;

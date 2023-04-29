@@ -4,6 +4,7 @@ import {BrowserRouter} from 'react-router-dom';
 
 import {App} from '@app';
 import {em, MantineProvider} from '@mantine/core';
+
 import {responsiveWidth} from './utils/responsiveWidth';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLDivElement);
