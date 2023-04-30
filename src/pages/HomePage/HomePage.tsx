@@ -22,6 +22,7 @@ const HomePage = () => {
         <VacancyItem />
         <VacancyItem />
         <VacancyItem />
+        <VacancyItem />
       </Flex>
     </Flex>
   );
