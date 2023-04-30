@@ -1,4 +1,4 @@
-import {Filters, VacancyItem} from '@components';
+import {Filters, SearchInput, VacancyItem} from '@components';
 import {Flex} from '@mantine/core';
 import {responsiveWidth} from '@utils';
 
@@ -18,6 +18,7 @@ const HomePage = () => {
         <Filters />
       </Flex>
       <Flex direction="column" gap={16}>
+        <SearchInput />
         <VacancyItem />
         <VacancyItem />
         <VacancyItem />

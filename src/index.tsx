@@ -68,6 +68,19 @@ root.render(
                 }),
               },
             },
+            Input: {
+              styles: (theme) => ({
+                input: {
+                  borderColor: theme.colors.gray[2],
+                  fontSize: 14,
+                  lineHeight: 21,
+                  color: theme.colors.gray[5],
+                  '&:focus': {
+                    borderColor: theme.colors.blue[5],
+                  },
+                },
+              }),
+            },
           },
         }}>
         <App />

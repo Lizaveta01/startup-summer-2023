@@ -33,13 +33,13 @@ const VacancyItem = () => {
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
-    gap: responsiveWidth(12),
+    gap: 12,
     width: responsiveWidth(773),
     backgroundColor: theme.colors.gray[0],
     borderRadius: 12,
     borderWidth: 1,
     borderColor: theme.colors.gray[2],
-    padding: responsiveWidth(24),
+    padding: 24,
     position: 'relative',
   },
   link: {

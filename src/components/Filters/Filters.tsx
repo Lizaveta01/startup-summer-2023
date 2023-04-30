@@ -90,7 +90,7 @@ const useStyles = createStyles((theme) => ({
   },
   text: {
     fontWeight: 700,
-    lineHeight: ' 1.1875rem',
+    lineHeight: '1.1875rem',
   },
   input: {
     width: responsiveWidth(275),

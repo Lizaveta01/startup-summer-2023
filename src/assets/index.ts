@@ -1,2 +1,2 @@
-export {ArrowIcon, ArrowsIcon, CancelIcon, LocationIcon, StarIcon} from './icons';
+export {ArrowIcon, ArrowsIcon, CancelIcon, LocationIcon, SearchIcon, StarIcon} from './icons';
 export {Logo} from './svg';
