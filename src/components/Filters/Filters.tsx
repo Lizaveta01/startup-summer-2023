@@ -1,9 +1,9 @@
-import {ArrowIcon, CancelIcon} from '@assets';
+import {ArrowIcon, ArrowsIcon, CancelIcon} from '@assets';
 import {Button, createStyles, Flex, Select, Text} from '@mantine/core';
 import {responsiveWidth} from '@utils';
 
 const Filters = () => {
-  const {classes, cx} = useStyles();
+  const {classes} = useStyles();
 
   return (
     <Flex justify={'flex-start'} align={'flex-start'} direction="column" className={classes.wrapper}>
@@ -11,7 +11,12 @@ const Filters = () => {
         <Text className={classes.text} size="s">
           Фильтры
         </Text>
-        <Button rightIcon={<CancelIcon />} variant="subtle" color="gray.5">
+        <Button
+          rightIcon={<CancelIcon />}
+          variant="subtle"
+          color="gray.5"
+          style={{fontWeight: 500, padding: 0, height: 20}}
+          compact>
           Сбросить все
         </Button>
       </Flex>
@@ -19,12 +24,12 @@ const Filters = () => {
         <Flex direction="column" gap={8}>
           <Text className={classes.text}>Отрасль</Text>
           <Select
-            size="sm"
+            size="md"
             radius={8}
             className={classes.input}
             placeholder="Выберете отрасль"
             rightSection={<ArrowIcon />}
-            rightSectionWidth={36}
+            rightSectionWidth={48}
             data={[
               {value: 'react', label: 'React'},
               {value: 'ng', label: 'Angular'},
@@ -37,10 +42,12 @@ const Filters = () => {
         <Flex direction="column" gap={8}>
           <Text className={classes.text}>Оклад</Text>
           <Select
-            size="sm"
+            size="md"
             radius={8}
             className={classes.input}
             placeholder="От"
+            rightSection={<ArrowsIcon />}
+            rightSectionWidth={36}
             data={[
               {value: 'react', label: 'React'},
               {value: 'ng', label: 'Angular'},
@@ -49,10 +56,12 @@ const Filters = () => {
             ]}
           />
           <Select
-            size="sm"
+            size="md"
             radius={8}
             placeholder="До"
             className={classes.input}
+            rightSection={<ArrowsIcon />}
+            rightSectionWidth={36}
             data={[
               {value: 'react', label: 'React'},
               {value: 'ng', label: 'Angular'},
@@ -61,6 +70,9 @@ const Filters = () => {
             ]}
           />
         </Flex>
+        <Button variant="filled" bg="blue.4" style={{fontWeight: 500, fontSize: 14, height: 40}} radius={8}>
+          Применить
+        </Button>
       </Flex>
     </Flex>
   );
@@ -78,6 +90,7 @@ const useStyles = createStyles((theme) => ({
   },
   text: {
     fontWeight: 700,
+    lineHeight: ' 1.1875rem',
   },
   input: {
     width: responsiveWidth(275),

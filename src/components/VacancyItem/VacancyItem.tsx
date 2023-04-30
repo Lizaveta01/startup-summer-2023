@@ -34,7 +34,7 @@ const VacancyItem = () => {
 const useStyles = createStyles((theme) => ({
   wrapper: {
     gap: responsiveWidth(12),
-    width: responsiveWidth(733),
+    width: responsiveWidth(773),
     backgroundColor: theme.colors.gray[0],
     borderRadius: 12,
     borderWidth: 1,
