@@ -6,14 +6,14 @@ import {responsiveWidth} from '@utils';
 
 const VacancyItem = () => {
   const {classes, cx} = useStyles();
-
+  const id = 1;
   return (
     <Flex justify={'flex-start'} align={'center'} className={classes.wrapper}>
       <Box className={classes.iconWrapper}>
         <StarIcon />
       </Box>
       <Stack spacing={12.5}>
-        <Text component={Link} to="/" variant="link" className={classes.link} size="s">
+        <Text component={Link} to={`vacancy/${id}`} variant="link" className={classes.link} size="s">
           Поиск Вакансий
         </Text>
         <Flex gap={responsiveWidth(12)} justify={'flex-start'} align={'center'} w={responsiveWidth(339)}>

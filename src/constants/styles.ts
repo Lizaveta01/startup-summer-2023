@@ -1,0 +1,2 @@
+export const HEADER_HEIGHT = 84;
+export const DESIGN_EXAMPLE_WINDOW_HEIGHT = 900;
