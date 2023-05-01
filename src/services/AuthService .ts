@@ -1,13 +1,9 @@
 /* eslint-disable no-console */
 import {API_PATH, BASE_DATA_API, PROXY_URL} from '@constants';
+import {IAuthResponse} from '@types';
 import axios, {AxiosResponse} from 'axios';
 
 import api from './axiosConfig';
-
-export interface IAuthResponse {
-  access_token: string;
-  refresh_token: string;
-}
 
 export const loginRequest = (): Promise<AxiosResponse<IAuthResponse>> => {
   return api.get<IAuthResponse>(API_PATH.auth);
