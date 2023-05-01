@@ -1,11 +1,9 @@
 import {useState} from 'react';
 
 import {Filters, SearchInput, VacancyItem} from '@components';
+import {DESIGN_EXAMPLE_WINDOW_HEIGHT, HEADER_HEIGHT} from '@constants';
 import {Flex, Pagination} from '@mantine/core';
 import {responsiveWidth} from '@utils';
-
-const HEADER_HEIGHT = 84;
-const DESIGN_EXAMPLE_WINDOW_HEIGHT = 900;
 
 const HomePage = () => {
   const [activePage, setPage] = useState(1);

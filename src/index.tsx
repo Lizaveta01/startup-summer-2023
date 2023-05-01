@@ -81,6 +81,16 @@ root.render(
                 },
               }),
             },
+            List: {
+              styles: () => ({
+                item: {
+                  lineHeight: '140%',
+                  fontSize: 16,
+                  paddingLeft: 9,
+                  paddingRight: 24,
+                },
+              }),
+            },
           },
         }}>
         <App />
