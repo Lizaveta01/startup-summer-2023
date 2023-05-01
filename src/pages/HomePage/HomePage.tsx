@@ -7,6 +7,7 @@ import {responsiveWidth} from '@utils';
 
 const HomePage = () => {
   const [activePage, setPage] = useState(1);
+
   return (
     <Flex
       justify="center"
