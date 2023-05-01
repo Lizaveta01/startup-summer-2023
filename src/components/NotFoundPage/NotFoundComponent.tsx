@@ -5,7 +5,7 @@ import img from '../../assets/images/404.png';
 
 const NotFoundComponent = () => {
   return (
-    <Flex align={'center'} direction={'column'} gap={responsiveWidth(32)} w={responsiveWidth(327)}>
+    <Flex align={'center'} direction={'column'} gap={responsiveWidth(32)}>
       <Image maw={240} mx="auto" src={img} alt="not foud" />
       <Text sx={{fontSize: 24, fontWeight: 600}}>Упс, здесь еще ничего нет!</Text>
       <Button

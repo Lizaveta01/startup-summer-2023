@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import {API_PATH, BASE_DATA_API, PROXY_URL} from '@constants';
+import {API_PARAMS, API_PATH, PROXY_URL} from '@constants';
 import {IAuthResponse} from '@types';
 import axios, {AxiosResponse} from 'axios';
 
@@ -25,7 +25,7 @@ const checkAuth = async () => {
   try {
     const refreshToken = localStorage.getItem('refresh_token');
     const response = await axios.get<IAuthResponse>(
-      `${PROXY_URL}/2.0/oauth2/refresh_token/?refresh_token=${refreshToken}&client_id=${BASE_DATA_API.client_id}&client_secret=${BASE_DATA_API.client_secret}`,
+      `${PROXY_URL}/2.0/oauth2/refresh_token/?refresh_token=${refreshToken}&client_id=${API_PARAMS.client_id}&client_secret=${API_PARAMS.client_secret}`,
       {withCredentials: true},
     );
     localStorage.setItem('token', response.data.access_token);

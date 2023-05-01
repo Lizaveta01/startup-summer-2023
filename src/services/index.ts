@@ -1,4 +1,4 @@
-import {AuthService, IAuthResponse} from './AuthService ';
+import {AuthService} from './AuthService ';
+import {getVacancies} from './getVacancies';
 
-export {AuthService};
-export type {IAuthResponse};
+export {AuthService, getVacancies};
