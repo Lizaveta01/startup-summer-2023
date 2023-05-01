@@ -10,7 +10,7 @@ export interface IVacancy {
   id_client: number;
   payment_from: number;
   payment_to: number;
-  profession: 'Специалист по согласованиям';
+  profession: string;
   payment: null;
   currency: string;
   type_of_work: {
@@ -19,9 +19,9 @@ export interface IVacancy {
   };
   town: {
     id: number;
-    title: 'Санкт-Петербург';
+    title: string;
   };
-  work: string; //долж обяз
-  candidat: 'string'; //требования к кандидату
-  compensation: string; // условия работы
+  work: string;
+  candidat: 'string';
+  compensation: string;
 }

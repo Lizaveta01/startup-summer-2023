@@ -11,4 +11,6 @@ export const BASE_DATA_API = {
 
 export const API_PATH = {
   auth: `/2.0/oauth2/password/?login=${BASE_DATA_API.login}&password=${BASE_DATA_API.password}&client_id=${BASE_DATA_API.client_id}&client_secret=v${BASE_DATA_API.client_secret}&hr=${BASE_DATA_API.hr}`,
+  catalogues: '/2.0/catalogues/',
+  vacancies: '2.0/vacancies/',
 };

@@ -2,29 +2,36 @@ import {Link} from 'react-router-dom';
 
 import {LocationIcon, StarIcon} from '@assets';
 import {Box, createStyles, Flex, Stack, Text} from '@mantine/core';
+import {IVacancy} from '@types';
 import {responsiveWidth} from '@utils';
 
-const VacancyItem = () => {
+type Props = {
+  vacancy: IVacancy;
+};
+
+const VacancyItem: React.FC<Props> = ({vacancy}) => {
   const {classes, cx} = useStyles();
-  const id = 1;
+
   return (
     <Flex justify={'flex-start'} align={'center'} className={classes.wrapper}>
       <Box className={classes.iconWrapper}>
         <StarIcon />
       </Box>
       <Stack spacing={12.5}>
-        <Text component={Link} to={`vacancy/${id}`} variant="link" className={classes.link} size="s">
-          Поиск Вакансий
+        <Text component={Link} to={`vacancy/${vacancy.id}`} variant="link" className={classes.link} size="s">
+          {vacancy.profession}
         </Text>
         <Flex gap={responsiveWidth(12)} justify={'flex-start'} align={'center'} w={responsiveWidth(339)}>
-          <Text className={cx(classes.text, classes.textBold)}>з/п от 700000 rub </Text>
+          <Text className={cx(classes.text, classes.textBold)}>
+            з/п от {vacancy.payment} {vacancy.currency}
+          </Text>
           <Text className={classes.circle}>•</Text>
-          <Text className={classes.text}>Полный рабочий день</Text>
+          <Text className={classes.text}>{vacancy.type_of_work.title}</Text>
         </Flex>
 
         <Flex gap={responsiveWidth(8)}>
           <LocationIcon />
-          <Text styles={classes.text}>Новый Уренгой</Text>
+          <Text styles={classes.text}>{vacancy.town.title}</Text>
         </Flex>
       </Stack>
     </Flex>
