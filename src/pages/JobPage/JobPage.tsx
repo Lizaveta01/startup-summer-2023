@@ -1,9 +1,10 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 
 import {LocationIcon, StarIcon} from '@assets';
-import {DESIGN_EXAMPLE_WINDOW_HEIGHT, HEADER_HEIGHT} from '@constants';
+import {useBookmarks} from '@hooks';
 import {Box, createStyles, Flex, List, Stack, Text, Title} from '@mantine/core';
+import {getVacancy} from '@services';
 import {IVacancy} from '@types';
 import {responsiveWidth} from '@utils';
 
@@ -11,31 +12,41 @@ const JobPage = () => {
   const {vacancyID} = useParams();
   const {classes, cx} = useStyles();
   const [vacancy, setVacancy] = useState<IVacancy | null>();
+  const {addToBookmarks, removeFromBookmarks, checkBookmarks} = useBookmarks();
 
-  const getItems = (itemsType: string) =>
-    itemsType
-      .split('\n')
-      .filter((line) => line.startsWith('• '))
-      .map((item, index) => <List.Item key={index}>{item.slice(2)}</List.Item>);
+  const getItems = (itemsType?: string) => {
+    return itemsType!.split('\n').map((item, index) => <List.Item key={index}>{item.slice(2)}</List.Item>);
+  };
 
-  useEffect(() => {}, []);
+  const getVacancyFromServer = useCallback(async () => {
+    try {
+      getVacancy(vacancyID!).then((data) => {
+        setVacancy(data);
+      });
+    } catch {}
+  }, [vacancyID]);
+
+  useEffect(() => {
+    getVacancyFromServer();
+  }, [getVacancyFromServer]);
+
   return (
-    <Flex
-      justify="flex-start"
-      align="center"
-      direction="column"
-      gap={20}
-      pt={40}
-      bg="gray.1"
-      h={`${100 - (HEADER_HEIGHT / DESIGN_EXAMPLE_WINDOW_HEIGHT) * 100}vh`}>
+    <Flex justify="center" align="center" direction="column" bg="gray.1" h={'100%'}>
       {vacancy && (
-        <>
+        <Flex justify="flex-start" align="center" direction="column" gap={20} pb={51} pt={40}>
           <Flex justify={'flex-start'} align={'center'} className={classes.wrapper} pos="relative" gap={16}>
-            <Box className={classes.iconWrapper}>
-              <StarIcon />
+            <Box
+              className={classes.iconWrapper}
+              onClick={() => {
+                checkBookmarks(vacancy) ? removeFromBookmarks(vacancy) : addToBookmarks(vacancy);
+              }}>
+              <StarIcon
+                color={checkBookmarks(vacancy) ? '#5E96FC' : '#ACADB9'}
+                fill={checkBookmarks(vacancy) ? '#5E96FC' : 'none'}
+              />
             </Box>
             <Stack spacing={12.5}>
-              <Text className={classes.textBold} size="l">
+              <Text className={classes.textBold} size="l" maw={responsiveWidth(675)}>
                 {vacancy.profession}
               </Text>
               <Flex gap={responsiveWidth(12)} justify={'flex-start'} align={'center'}>
@@ -53,26 +64,32 @@ const JobPage = () => {
             </Stack>
           </Flex>
           <Flex justify={'flex-start'} align={'flex-start'} className={classes.wrapper} direction="column">
-            <Flex gap={responsiveWidth(16)} direction="column">
-              <Title size="s" className={classes.title}>
-                Обязанности:
-              </Title>
-              <List>{getItems(vacancy.work)}</List>
-            </Flex>
-            <Flex gap={responsiveWidth(16)} direction="column">
-              <Title size="s" className={classes.title}>
-                Требования:
-              </Title>
-              <List>{getItems(vacancy.candidat)}</List>
-            </Flex>
-            <Flex gap={responsiveWidth(16)} direction="column">
-              <Title size="s" className={classes.title}>
-                Условия:
-              </Title>
-              <List>{getItems(vacancy.compensation)}</List>
-            </Flex>
+            {vacancy.work && (
+              <Flex gap={responsiveWidth(16)} direction="column">
+                <Title size="s" className={classes.title}>
+                  Обязанности:
+                </Title>
+                <List>{getItems(vacancy.work)}</List>
+              </Flex>
+            )}
+            {vacancy.candidat && (
+              <Flex gap={responsiveWidth(16)} direction="column">
+                <Title size="s" className={classes.title}>
+                  Требования:
+                </Title>
+                <List>{getItems(vacancy.candidat)}</List>
+              </Flex>
+            )}
+            {vacancy.compensation && (
+              <Flex gap={responsiveWidth(16)} direction="column">
+                <Title size="s" className={classes.title}>
+                  Условия:
+                </Title>
+                <List>{getItems(vacancy.compensation)}</List>
+              </Flex>
+            )}
           </Flex>
-        </>
+        </Flex>
       )}
     </Flex>
   );
