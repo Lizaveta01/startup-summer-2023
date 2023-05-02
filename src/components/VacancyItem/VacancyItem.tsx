@@ -1,4 +1,3 @@
-import {useState} from 'react';
 import {Link} from 'react-router-dom';
 
 import {LocationIcon, StarIcon} from '@assets';
@@ -8,37 +7,18 @@ import {responsiveWidth} from '@utils';
 
 type Props = {
   vacancy: IVacancy;
+  onClickAdd: () => void;
+  onClickRemove: () => void;
+  isBookmarked: boolean;
 };
 
-const VacancyItem: React.FC<Props> = ({vacancy}) => {
+const VacancyItem: React.FC<Props> = ({vacancy, isBookmarked, onClickAdd, onClickRemove}) => {
   const {classes, cx} = useStyles();
-  const [isBookmarked, setIsBookmarked] = useState(false);
-
-  const bookmarksJSON = localStorage.getItem('bookmarks');
-  const bookmarksFromStorage: IVacancy[] | [] = bookmarksJSON ? JSON.parse(bookmarksJSON) : [];
-
-  const [bookmarks, setBookmarks] = useState<IVacancy[] | []>(bookmarksFromStorage);
-
-  const handleBookmarkedStatus = () => {
-    isBookmarked ? removefromBookmarks() : addToBookmarks();
-  };
-
-  const addToBookmarks = () => {
-    setIsBookmarked(true);
-    setBookmarks((prev) => [...prev, vacancy]);
-    localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
-  };
-
-  const removefromBookmarks = () => {
-    setIsBookmarked(false);
-    setBookmarks((prev) => prev.filter((bookmark) => bookmark.id !== vacancy.id));
-    localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
-  };
 
   return (
     <Flex justify={'flex-start'} align={'center'} className={classes.wrapper}>
-      <Box className={classes.iconWrapper} onClick={handleBookmarkedStatus}>
-        <StarIcon color={isBookmarked ? '#5E96FC' : '#ACADB9'} fill={isBookmarked ? '#5E96FC' : 'none'}/>
+      <Box className={classes.iconWrapper} onClick={isBookmarked ? onClickRemove : onClickAdd}>
+        <StarIcon color={isBookmarked ? '#5E96FC' : '#ACADB9'} fill={isBookmarked ? '#5E96FC' : 'none'} />
       </Box>
       <Stack spacing={12.5}>
         <Text

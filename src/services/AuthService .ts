@@ -1,19 +1,27 @@
 /* eslint-disable no-console */
 import {API_PARAMS, API_PATH, PROXY_URL} from '@constants';
 import {IAuthResponse} from '@types';
-import axios, {AxiosResponse} from 'axios';
-
-import api from './axiosConfig';
-
-export const loginRequest = (): Promise<AxiosResponse<IAuthResponse>> => {
-  return api.get<IAuthResponse>(API_PATH.auth);
-};
+import axios from 'axios';
 
 const login = async () => {
   try {
-    const response = await loginRequest();
-    localStorage.setItem('token', response.data.access_token);
-    localStorage.setItem('refresh_token', response.data.refresh_token);
+    console.log('api', API_PATH.auth);
+    const response: IAuthResponse = await axios
+      .get(API_PATH.auth, {
+        headers: {
+          'x-secret-key': API_PARAMS['x-secret-key'],
+        },
+      })
+      .then((response) => {
+        console.log('response', response.data);
+        return response.data;
+      })
+      .catch((error) => {
+        console.log('error', error);
+      });
+
+    localStorage.setItem('token', response.access_token);
+    localStorage.setItem('refresh_token', response.refresh_token);
   } catch (err: unknown | Error) {
     if (err instanceof Error) {
       console.log(err.message);

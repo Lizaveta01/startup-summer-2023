@@ -11,7 +11,7 @@ export const API_PARAMS = {
 };
 
 export const API_PATH = {
-  auth: `/2.0/oauth2/password/?login=${API_PARAMS.login}&password=${API_PARAMS.password}&client_id=${API_PARAMS.client_id}&client_secret=v${API_PARAMS.client_secret}&hr=${API_PARAMS.hr}`,
-  catalogues: '/2.0/catalogues/',
+  auth: `${PROXY_URL}/2.0/oauth2/password/?login=${API_PARAMS.login}&password=${API_PARAMS.password}&client_id=${API_PARAMS.client_id}&client_secret=${API_PARAMS.client_secret}&hr=${API_PARAMS.hr}`,
+  catalogues: `${PROXY_URL}/2.0/catalogues/`,
   vacancies: `${PROXY_URL}/2.0/vacancies/`,
 };

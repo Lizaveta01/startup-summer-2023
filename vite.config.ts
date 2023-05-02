@@ -15,6 +15,7 @@ export default defineConfig({
       '@constants': `${path.resolve(__dirname, './src/constants')}`,
       '@services': `${path.resolve(__dirname, './src/services')}`,
       '@types': `${path.resolve(__dirname, './src/types')}`,
+      '@hooks': `${path.resolve(__dirname, './src/hooks')}`,
     },
   },
 });

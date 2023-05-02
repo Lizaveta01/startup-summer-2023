@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react';
 
 import {Filters, SearchInput, VacancyItem} from '@components';
 import {DESIGN_EXAMPLE_WINDOW_HEIGHT, HEADER_HEIGHT} from '@constants';
+import {useBookmarks} from '@hooks';
 import {Flex, Pagination} from '@mantine/core';
 import {getVacancies} from '@services';
 import {IVacancy} from '@types';
@@ -14,6 +15,7 @@ const HomePage = () => {
   const [vacancies, setVacancies] = useState<IVacancy[] | null>(null);
   const [vacanciesAmount, setVacanciesAmount] = useState(0);
   const [search, setSearch] = useState('');
+  const {addToBookmarks, removeFromBookmarks, checkBookmarks} = useBookmarks();
 
   const getVacanciesRequest = () => {
     try {
@@ -42,7 +44,18 @@ const HomePage = () => {
       <Flex direction="column" justify="center" align="center" gap={40}>
         <Flex direction="column" gap={16}>
           <SearchInput value={search} onChange={setSearch} handleSearch={getVacanciesRequest} />
-          {vacancies && vacancies.slice(0, 4).map((item) => <VacancyItem key={item.id} vacancy={item} />)}
+          {vacancies &&
+            vacancies
+              .slice(0, 4)
+              .map((item) => (
+                <VacancyItem
+                  key={item.id}
+                  vacancy={item}
+                  onClickAdd={() => addToBookmarks(item)}
+                  onClickRemove={() => removeFromBookmarks(item)}
+                  isBookmarked={checkBookmarks(item)}
+                />
+              ))}
         </Flex>
         <Pagination
           total={vacanciesAmount / VACANCIES_ON_PAGE}
