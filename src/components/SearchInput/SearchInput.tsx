@@ -2,6 +2,7 @@ import {ChangeEvent, useState} from 'react';
 
 import {SearchIcon} from '@assets';
 import {Button, Input} from '@mantine/core';
+import {responsiveWidth} from '@utils';
 
 type Props = {
   value: string;
@@ -19,6 +20,7 @@ const SearchInput: React.FC<Props> = ({value, onChange}) => {
       onChange={(e: ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
       placeholder="Введите название вакансии"
       rightSectionWidth={108}
+      w={responsiveWidth(773)}
       iconWidth={36}
       rightSection={
         <Button
