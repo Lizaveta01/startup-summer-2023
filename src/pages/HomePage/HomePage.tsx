@@ -5,7 +5,7 @@ import {DESIGN_EXAMPLE_WINDOW_HEIGHT, HEADER_HEIGHT} from '@constants';
 import {useBookmarks} from '@hooks';
 import {Flex, Pagination} from '@mantine/core';
 import {getVacancies} from '@services';
-import {IVacancy} from '@types';
+import {IFilters, IVacancy} from '@types';
 import {responsiveWidth} from '@utils';
 
 const VACANCIES_ON_PAGE = 4;
@@ -16,10 +16,11 @@ const HomePage = () => {
   const [vacanciesAmount, setVacanciesAmount] = useState(0);
   const [search, setSearch] = useState('');
   const {addToBookmarks, removeFromBookmarks, checkBookmarks} = useBookmarks();
+  const [filters, setFilters] = useState<IFilters | undefined>(undefined);
 
-  const getVacanciesRequest = () => {
+  const getVacanciesRequest = (filters?: IFilters, search?: string) => {
     try {
-      getVacancies().then((data) => {
+      getVacancies({search: search, ...filters}).then((data) => {
         setVacancies(data?.objects);
         setVacanciesAmount(data?.total);
       });
@@ -27,8 +28,8 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    getVacanciesRequest();
-  }, []);
+    getVacanciesRequest(filters, search);
+  }, [filters, search]);
 
   return (
     <Flex
@@ -39,7 +40,7 @@ const HomePage = () => {
       bg="gray.1"
       h={`${100 - (HEADER_HEIGHT / DESIGN_EXAMPLE_WINDOW_HEIGHT) * 100}vh`}>
       <Flex>
-        <Filters />
+        <Filters onFilterChanged={setFilters} />
       </Flex>
       <Flex direction="column" justify="center" align="center" gap={40}>
         <Flex direction="column" gap={16}>
