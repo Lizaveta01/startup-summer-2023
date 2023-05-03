@@ -1,4 +1,4 @@
-import {API_PARAMS, API_PATH} from '@constants';
+import {API_PARAMS, API_PATH, VACANCIES_COUNT_ON_PAGE} from '@constants';
 import {IFilters, IVacancyResponse} from '@types';
 import axios from 'axios';
 
@@ -7,10 +7,12 @@ export const getVacancies = async ({
   payment_from = '',
   payment_to = '',
   catalogues = '',
+  count = VACANCIES_COUNT_ON_PAGE,
+  page = 1,
 }: IFilters = {}): Promise<IVacancyResponse> => {
   return await axios
     .get(
-      `${API_PATH.vacancies}?keyword=${search}&catalogues=${catalogues}&payment_from=${payment_from}&payment_to=${payment_to}`,
+      `${API_PATH.vacancies}?keyword=${search}&catalogues=${catalogues}&payment_from=${payment_from}&payment_to=${payment_to}&page=${page}&count=${count}`,
       {
         headers: {
           'x-secret-key': API_PARAMS['x-secret-key'],

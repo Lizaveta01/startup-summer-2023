@@ -1,35 +1,31 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 
 import {Filters, SearchInput, VacancyItem} from '@components';
-import {DESIGN_EXAMPLE_WINDOW_HEIGHT, HEADER_HEIGHT} from '@constants';
+import {DESIGN_EXAMPLE_WINDOW_HEIGHT, HEADER_HEIGHT, MAX_API_VACANCIES, VACANCIES_COUNT_ON_PAGE} from '@constants';
 import {useBookmarks} from '@hooks';
 import {Flex, Pagination} from '@mantine/core';
 import {getVacancies} from '@services';
 import {IFilters, IVacancy} from '@types';
 import {responsiveWidth} from '@utils';
 
-const VACANCIES_ON_PAGE = 4;
-
 const HomePage = () => {
   const [activePage, setPage] = useState(1);
   const [vacancies, setVacancies] = useState<IVacancy[] | null>(null);
-  const [vacanciesAmount, setVacanciesAmount] = useState(0);
   const [search, setSearch] = useState('');
   const {addToBookmarks, removeFromBookmarks, checkBookmarks} = useBookmarks();
   const [filters, setFilters] = useState<IFilters | undefined>(undefined);
 
-  const getVacanciesRequest = (filters?: IFilters, search?: string) => {
+  const getVacanciesRequest = useCallback(() => {
     try {
-      getVacancies({search: search, ...filters}).then((data) => {
+      getVacancies({search: search, page: activePage, ...filters}).then((data) => {
         setVacancies(data?.objects);
-        setVacanciesAmount(data?.total);
       });
     } catch (e) {}
-  };
+  }, [activePage, filters, search]);
 
   useEffect(() => {
-    getVacanciesRequest(filters, search);
-  }, [filters, search]);
+    getVacanciesRequest();
+  }, [filters, search, activePage, getVacanciesRequest]);
 
   return (
     <Flex
@@ -44,22 +40,20 @@ const HomePage = () => {
       </Flex>
       <Flex direction="column" justify="center" align="center" gap={40}>
         <Flex direction="column" gap={16}>
-          <SearchInput value={search} onChange={setSearch} handleSearch={getVacanciesRequest} />
+          <SearchInput value={search} onChange={setSearch} />
           {vacancies &&
-            vacancies
-              .slice(0, 4)
-              .map((item) => (
-                <VacancyItem
-                  key={item.id}
-                  vacancy={item}
-                  onClickAdd={() => addToBookmarks(item)}
-                  onClickRemove={() => removeFromBookmarks(item)}
-                  isBookmarked={checkBookmarks(item)}
-                />
-              ))}
+            vacancies.map((item) => (
+              <VacancyItem
+                key={item.id}
+                vacancy={item}
+                onClickAdd={() => addToBookmarks(item)}
+                onClickRemove={() => removeFromBookmarks(item)}
+                isBookmarked={checkBookmarks(item)}
+              />
+            ))}
         </Flex>
         <Pagination
-          total={vacanciesAmount / VACANCIES_ON_PAGE}
+          total={MAX_API_VACANCIES / VACANCIES_COUNT_ON_PAGE}
           value={activePage}
           onChange={setPage}
           color="blue.4"
