@@ -1,82 +1,96 @@
+import {useCallback, useEffect, useState} from 'react';
+import {useParams} from 'react-router-dom';
+
 import {LocationIcon, StarIcon} from '@assets';
-import {DESIGN_EXAMPLE_WINDOW_HEIGHT, HEADER_HEIGHT} from '@constants';
+import {useBookmarks} from '@hooks';
 import {Box, createStyles, Flex, List, Stack, Text, Title} from '@mantine/core';
+import {getVacancy} from '@services';
+import {IVacancy} from '@types';
 import {responsiveWidth} from '@utils';
 
 const JobPage = () => {
+  const {vacancyID} = useParams();
   const {classes, cx} = useStyles();
+  const [vacancy, setVacancy] = useState<IVacancy | null>();
+  const {addToBookmarks, removeFromBookmarks, checkBookmarks} = useBookmarks();
+
+  const getItems = (itemsType?: string) => {
+    return itemsType!.split('\n').map((item, index) => <List.Item key={index}>{item.slice(2)}</List.Item>);
+  };
+
+  const getVacancyFromServer = useCallback(async () => {
+    try {
+      getVacancy(vacancyID!).then((data) => {
+        setVacancy(data);
+      });
+    } catch {}
+  }, [vacancyID]);
+
+  useEffect(() => {
+    getVacancyFromServer();
+  }, [getVacancyFromServer]);
 
   return (
-    <Flex
-      justify="flex-start"
-      align="center"
-      direction="column"
-      gap={20}
-      pt={40}
-      bg="gray.1"
-      h={`${100 - (HEADER_HEIGHT / DESIGN_EXAMPLE_WINDOW_HEIGHT) * 100}vh`}>
-      <Flex justify={'flex-start'} align={'center'} className={classes.wrapper} pos="relative" gap={16}>
-        <Box className={classes.iconWrapper}>
-          <StarIcon />
-        </Box>
-        <Stack spacing={12.5}>
-          <Text className={classes.textBold} size="l">
-            Менеджер-дизайнер
-          </Text>
-          <Flex gap={responsiveWidth(12)} justify={'flex-start'} align={'center'}>
-            <Text className={cx(classes.title, classes.textBold)}>з/п от 700000 rub </Text>
-            <Text className={classes.circle}>•</Text>
-            <Text className={classes.title}>Полный рабочий день</Text>
+    <Flex justify="center" align="center" direction="column" bg="gray.1" h={'100%'}>
+      {vacancy && (
+        <Flex justify="flex-start" align="center" direction="column" gap={20} pb={51} pt={40}>
+          <Flex justify={'flex-start'} align={'center'} className={classes.wrapper} pos="relative" gap={16}>
+            <Box
+              className={classes.iconWrapper}
+              onClick={() => {
+                checkBookmarks(vacancy) ? removeFromBookmarks(vacancy) : addToBookmarks(vacancy);
+              }}>
+              <StarIcon
+                color={checkBookmarks(vacancy) ? '#5E96FC' : '#ACADB9'}
+                fill={checkBookmarks(vacancy) ? '#5E96FC' : 'none'}
+              />
+            </Box>
+            <Stack spacing={12.5}>
+              <Text className={classes.textBold} size="l" maw={responsiveWidth(675)}>
+                {vacancy.profession}
+              </Text>
+              <Flex gap={responsiveWidth(12)} justify={'flex-start'} align={'center'}>
+                <Text className={cx(classes.title, classes.textBold)}>
+                  з/п от {vacancy.payment} {vacancy.currency}
+                </Text>
+                <Text className={classes.circle}>•</Text>
+                <Text className={classes.title}>{vacancy.type_of_work.title}</Text>
+              </Flex>
+
+              <Flex gap={responsiveWidth(8)}>
+                <LocationIcon />
+                <Text styles={classes.text}>{vacancy.town.title}</Text>
+              </Flex>
+            </Stack>
           </Flex>
-
-          <Flex gap={responsiveWidth(8)}>
-            <LocationIcon />
-            <Text styles={classes.text}>Новый Уренгой</Text>
+          <Flex justify={'flex-start'} align={'flex-start'} className={classes.wrapper} direction="column">
+            {vacancy.work && (
+              <Flex gap={responsiveWidth(16)} direction="column">
+                <Title size="s" className={classes.title}>
+                  Обязанности:
+                </Title>
+                <List>{getItems(vacancy.work)}</List>
+              </Flex>
+            )}
+            {vacancy.candidat && (
+              <Flex gap={responsiveWidth(16)} direction="column">
+                <Title size="s" className={classes.title}>
+                  Требования:
+                </Title>
+                <List>{getItems(vacancy.candidat)}</List>
+              </Flex>
+            )}
+            {vacancy.compensation && (
+              <Flex gap={responsiveWidth(16)} direction="column">
+                <Title size="s" className={classes.title}>
+                  Условия:
+                </Title>
+                <List>{getItems(vacancy.compensation)}</List>
+              </Flex>
+            )}
           </Flex>
-        </Stack>
-      </Flex>
-
-      <Flex justify={'flex-start'} align={'flex-start'} className={classes.wrapper} direction="column">
-        <Flex gap={responsiveWidth(16)} direction="column">
-          <Title size="s" className={classes.title}>
-            Обязанности:
-          </Title>
-
-          <List>
-            <List.Item>
-              Разработка дизайн-макетов для наружной, интерьерной рекламы, полиграфии, сувенирной продукции.
-            </List.Item>
-            <List.Item>Подготовка и вёрстка макетов в CorelDraw, Adobe photoshop.</List.Item>
-            <List.Item>Создание дизайна логотипов и брендбуков</List.Item>
-            <List.Item>Управленческая функция: обучение, адаптация дизайнеров, их контроль, оценка</List.Item>
-          </List>
         </Flex>
-        <Flex gap={responsiveWidth(16)} direction="column">
-          <Title size="s" className={classes.title}>
-            Требования:
-          </Title>
-          <List>
-            <List.Item>Собеседование – после успешного прохождения тестового задания</List.Item>
-            <List.Item>Рассматриваются кандидаты только с опытом работы</List.Item>
-            <List.Item>Обязательно - наличие портфолио</List.Item>
-            <List.Item>
-              Умение самостоятельно принимать решения, умение объективно оценивать свою работу, работать в режиме
-              многозадачности и переключаться с одного задания к другому и планировать свой день. Соблюдать сроки.
-            </List.Item>
-            <List.Item>Ответственный, исполнительный, целеустремленный, большим плюсом будет опыт управления</List.Item>
-          </List>
-        </Flex>
-        <Flex gap={responsiveWidth(16)} direction="column">
-          <Title size="s" className={classes.title}>
-            Условия:
-          </Title>
-          <List>
-            <List.Item>Оформление по контракту</List.Item>
-            <List.Item>Полный социальный пакет</List.Item>
-            <List.Item>Премирование по результатам работы</List.Item>
-          </List>
-        </Flex>
-      </Flex>
+      )}
     </Flex>
   );
 };

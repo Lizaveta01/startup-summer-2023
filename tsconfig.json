@@ -8,6 +8,9 @@
       "@pages": ["src/pages"],
       "@utils": ["src/utils"],
       "@constants": ["src/constants"],
+      "@services": ["src/services"],
+      "@types": ["src/types"],
+      "@hooks": ["src/hooks"],
     },
     "target": "esnext",
     "lib": [

@@ -2,29 +2,45 @@ import {Link} from 'react-router-dom';
 
 import {LocationIcon, StarIcon} from '@assets';
 import {Box, createStyles, Flex, Stack, Text} from '@mantine/core';
+import {IVacancy} from '@types';
 import {responsiveWidth} from '@utils';
 
-const VacancyItem = () => {
+type Props = {
+  vacancy: IVacancy;
+  onClickAdd: () => void;
+  onClickRemove: () => void;
+  isBookmarked: boolean;
+};
+
+const VacancyItem: React.FC<Props> = ({vacancy, isBookmarked, onClickAdd, onClickRemove}) => {
   const {classes, cx} = useStyles();
-  const id = 1;
+
   return (
     <Flex justify={'flex-start'} align={'center'} className={classes.wrapper}>
-      <Box className={classes.iconWrapper}>
-        <StarIcon />
+      <Box className={classes.iconWrapper} onClick={isBookmarked ? onClickRemove : onClickAdd}>
+        <StarIcon color={isBookmarked ? '#5E96FC' : '#ACADB9'} fill={isBookmarked ? '#5E96FC' : 'none'} />
       </Box>
       <Stack spacing={12.5}>
-        <Text component={Link} to={`vacancy/${id}`} variant="link" className={classes.link} size="s">
-          Поиск Вакансий
+        <Text
+          component={Link}
+          to={`vacancy/${vacancy.id}`}
+          variant="link"
+          className={classes.link}
+          size="s"
+          w={responsiveWidth(670)}>
+          {vacancy.profession}
         </Text>
-        <Flex gap={responsiveWidth(12)} justify={'flex-start'} align={'center'} w={responsiveWidth(339)}>
-          <Text className={cx(classes.text, classes.textBold)}>з/п от 700000 rub </Text>
+        <Flex gap={responsiveWidth(12)} justify={'flex-start'} align={'center'}>
+          <Text className={cx(classes.text, classes.textBold)}>
+            з/п от {vacancy.payment_from} {vacancy.currency}
+          </Text>
           <Text className={classes.circle}>•</Text>
-          <Text className={classes.text}>Полный рабочий день</Text>
+          <Text className={classes.text}>{vacancy.type_of_work.title}</Text>
         </Flex>
 
         <Flex gap={responsiveWidth(8)}>
           <LocationIcon />
-          <Text styles={classes.text}>Новый Уренгой</Text>
+          <Text styles={classes.text}>{vacancy.town.title}</Text>
         </Flex>
       </Stack>
     </Flex>
@@ -41,7 +57,6 @@ const useStyles = createStyles((theme) => ({
     borderColor: theme.colors.gray[2],
     padding: 24,
     position: 'relative',
-    height: 137,
   },
   link: {
     fontWeight: 600,
