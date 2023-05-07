@@ -1,9 +1,11 @@
 import {useCallback, useEffect, useState} from 'react';
 
+import {FiltersIcon} from '@assets';
 import {Filters, NotFoundComponent, SearchInput, VacancyItem} from '@components';
 import {DESIGN_EXAMPLE_WINDOW_HEIGHT, HEADER_HEIGHT, MAX_API_VACANCIES, VACANCIES_COUNT_ON_PAGE} from '@constants';
 import {useBookmarks} from '@hooks';
-import {Flex, Loader, Pagination} from '@mantine/core';
+import {ActionIcon, Drawer, Flex, Loader, Pagination} from '@mantine/core';
+import {useDisclosure, useMediaQuery} from '@mantine/hooks';
 import {getVacancies} from '@services';
 import {IFilters, IVacancy} from '@types';
 import {responsiveWidth} from '@utils';
@@ -18,6 +20,8 @@ const HomePage = () => {
   const {addToBookmarks, removeFromBookmarks, checkBookmarks} = useBookmarks();
   const [filters, setFilters] = useState<IFilters | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
+  const [opened, {toggle}] = useDisclosure(false);
+  const isMobile = useMediaQuery('(max-width: 758px)');
 
   const getVacanciesRequest = useCallback(() => {
     try {
@@ -46,12 +50,17 @@ const HomePage = () => {
       pt={40}
       bg="gray.1"
       h={`${100 - (HEADER_HEIGHT / DESIGN_EXAMPLE_WINDOW_HEIGHT) * 100}vh`}>
-      <Flex>
-        <Filters onFilterChanged={setFilters} />
-      </Flex>
-      <Flex direction="column" justify="center" align="center" gap={40}>
+      <Flex>{!isMobile && <Filters onFilterChanged={setFilters} />}</Flex>
+      <Flex direction="column" justify="center" align="center" gap={40} pr={isMobile ? 10 : 0}>
         <Flex direction="column" gap={16} justify="center" align="center">
-          <SearchInput value={search} onChange={setSearch} />
+          <Flex justify={'center'} align={'center'} gap={10} w={'100%'}>
+            <SearchInput value={search} onChange={setSearch} />
+            {isMobile && (
+              <ActionIcon variant="filled" onClick={toggle} bg={'blue.4'}>
+                <FiltersIcon />
+              </ActionIcon>
+            )}
+          </Flex>
 
           {isLoading ? (
             <Flex h={596}>
@@ -79,6 +88,7 @@ const HomePage = () => {
         {isLoading ? null : vacancies?.length ? (
           <Pagination
             total={total}
+            siblings={0}
             value={activePage}
             onChange={setPage}
             color="blue.4"
@@ -92,6 +102,11 @@ const HomePage = () => {
           />
         ) : null}
       </Flex>
+      <Drawer opened={opened} onClose={toggle} position="top">
+        <Flex justify={'center'}>
+          <Filters onFilterChanged={setFilters} />
+        </Flex>
+      </Drawer>
     </Flex>
   );
 };

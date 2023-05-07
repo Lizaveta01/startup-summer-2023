@@ -11,7 +11,7 @@ import {responsiveWidth} from '@utils';
 
 const JobPage = () => {
   const {vacancyID} = useParams();
-  const {classes, cx} = useStyles();
+  const {classes} = useStyles();
   const [vacancy, setVacancy] = useState<IVacancy | null>();
   const [isLoading, setIsLoading] = useState(false);
   const {addToBookmarks, removeFromBookmarks, checkBookmarks} = useBookmarks();
@@ -57,45 +57,39 @@ const JobPage = () => {
               />
             </Box>
             <Stack spacing={12.5}>
-              <Text className={classes.textBold} size="l" maw={responsiveWidth(675)}>
+              <Text className={classes.textBold} size="l" w={'90%'}>
                 {vacancy.profession}
               </Text>
               <Flex gap={responsiveWidth(12)} justify={'flex-start'} align={'center'}>
-                <Text className={cx(classes.title, classes.textBold)}>
+                <Text size="s" className={classes.textBold}>
                   з/п от {vacancy.payment} {vacancy.currency}
                 </Text>
                 <Text className={classes.circle}>•</Text>
-                <Text className={classes.title}>{vacancy.type_of_work.title}</Text>
+                <Text size="s">{vacancy.type_of_work.title}</Text>
               </Flex>
 
               <Flex gap={responsiveWidth(8)}>
                 <LocationIcon />
-                <Text styles={classes.text}>{vacancy.town.title}</Text>
+                <Text size="xs">{vacancy.town.title}</Text>
               </Flex>
             </Stack>
           </Flex>
           <Flex justify={'flex-start'} align={'flex-start'} className={classes.wrapper} direction="column">
             {vacancy.work && (
               <Flex gap={responsiveWidth(16)} direction="column">
-                <Title size="s" className={classes.title}>
-                  Обязанности:
-                </Title>
+                <Title size="s">Обязанности:</Title>
                 <List>{getItems(vacancy.work)}</List>
               </Flex>
             )}
             {vacancy.candidat && (
               <Flex gap={responsiveWidth(16)} direction="column">
-                <Title size="s" className={classes.title}>
-                  Требования:
-                </Title>
+                <Title size="s">Требования:</Title>
                 <List>{getItems(vacancy.candidat)}</List>
               </Flex>
             )}
             {vacancy.compensation && (
               <Flex gap={responsiveWidth(16)} direction="column">
-                <Title size="s" className={classes.title}>
-                  Условия:
-                </Title>
+                <Title size="s">Условия:</Title>
                 <List>{getItems(vacancy.compensation)}</List>
               </Flex>
             )}
@@ -115,6 +109,10 @@ const useStyles = createStyles((theme) => ({
     borderWidth: 1,
     borderColor: theme.colors.gray[2],
     padding: 24,
+    [`@media (max-width: 758px)`]: {
+      width: '100%',
+      padding: 12,
+    },
   },
   link: {
     fontWeight: 600,
@@ -130,10 +128,10 @@ const useStyles = createStyles((theme) => ({
   textBold: {
     fontWeight: 600,
   },
-  title: {
-    fontSize: 20,
-    lineHeight: '20px',
-  },
+  // title: {
+  //   fontSize: 20,
+  //   lineHeight: '20px',
+  // },
   iconWrapper: {
     position: 'absolute',
     right: responsiveWidth(24),

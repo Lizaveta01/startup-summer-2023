@@ -4,7 +4,6 @@ import {ArrowIcon, ArrowsIcon, CancelIcon} from '@assets';
 import {Button, createStyles, Flex, Select, Text} from '@mantine/core';
 import {getCatalogues} from '@services';
 import {IFilters} from '@types';
-import {responsiveWidth} from '@utils';
 
 interface IICatalogueItem {
   value: string;
@@ -13,6 +12,15 @@ interface IICatalogueItem {
 type Props = {
   onFilterChanged: (filters: IFilters) => void;
 };
+
+const SALARY_RANGES = [
+  {value: '10000', label: '10 000'},
+  {value: '30000', label: '30 000'},
+  {value: '50000', label: '50 000'},
+  {value: '100000', label: '100 000'},
+  {value: '150000', label: '150 000'},
+  {value: '200000', label: '200 000'},
+];
 
 const Filters: React.FC<Props> = ({onFilterChanged}) => {
   const {classes} = useStyles();
@@ -53,7 +61,7 @@ const Filters: React.FC<Props> = ({onFilterChanged}) => {
 
   return (
     <Flex justify={'flex-start'} align={'flex-start'} direction="column" className={classes.wrapper}>
-      <Flex justify="space-between" align="center" w={responsiveWidth(275)}>
+      <Flex justify="space-between" align="center" w={275}>
         <Text className={classes.text} size="s">
           Фильтры
         </Text>
@@ -96,13 +104,7 @@ const Filters: React.FC<Props> = ({onFilterChanged}) => {
             rightSectionWidth={36}
             value={paymentFrom}
             onChange={setPaymentFrom}
-            data={[
-              {value: '30000', label: '30 000'},
-              {value: '50000', label: '50 000'},
-              {value: '100000', label: '100 000'},
-              {value: '150000', label: '150 000'},
-              {value: '200000', label: '200 000'},
-            ]}
+            data={SALARY_RANGES}
           />
           <Select
             data-elem="salary-to-input"
@@ -114,13 +116,7 @@ const Filters: React.FC<Props> = ({onFilterChanged}) => {
             rightSectionWidth={36}
             value={paymentTo}
             onChange={setPaymentTo}
-            data={[
-              {value: '30000', label: '30 000'},
-              {value: '50000', label: '50 000'},
-              {value: '100000', label: '100 000'},
-              {value: '150000', label: '150 000'},
-              {value: '200000', label: '200 000'},
-            ]}
+            data={SALARY_RANGES}
           />
         </Flex>
         <Button
@@ -140,19 +136,19 @@ const Filters: React.FC<Props> = ({onFilterChanged}) => {
 const useStyles = createStyles((theme) => ({
   wrapper: {
     gap: 32,
-    width: responsiveWidth(315),
+    width: 315,
     backgroundColor: theme.colors.gray[0],
     borderRadius: 12,
     borderWidth: 1,
     borderColor: theme.colors.gray[2],
-    padding: responsiveWidth(20),
+    padding: 20,
   },
   text: {
     fontWeight: 700,
     lineHeight: '1.1875rem',
   },
   input: {
-    width: responsiveWidth(275),
+    width: 275,
   },
 }));
 

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import {BrowserRouter} from 'react-router-dom';
 
 import {App} from '@app';
-import {em, MantineProvider} from '@mantine/core';
+import {em, MantineProvider, rem} from '@mantine/core';
 
 import {responsiveWidth} from './utils/responsiveWidth';
 
@@ -27,26 +27,41 @@ root.render(
               sizes: {
                 xs: () => ({
                   root: {
-                    lineHeight: em(20),
-                    fontSize: em(14),
+                    fontSize: em(16),
+                    lineHeight: '19px',
+                    fontWeight: 400,
+                    '@media (max-width: 576px)': {
+                      fontSize: rem(14),
+                      lineHeight: em(14),
+                    },
                   },
                 }),
                 s: () => ({
                   root: {
                     lineHeight: em(20),
-                    fontSize: em(20),
+                    fontSize: rem(20),
+                    '@media (max-width: 576px)': {
+                      fontSize: rem(16),
+                      lineHeight: em(14),
+                    },
                   },
                 }),
                 m: () => ({
                   root: {
-                    lineHeight: em('140%'),
-                    fontSize: em(16),
+                    fontSize: em(24),
+                    '@media (max-width: 576px)': {
+                      fontSize: rem(18),
+                    },
                   },
                 }),
                 l: () => ({
                   root: {
                     lineHeight: em('140%'),
                     fontSize: em(28),
+                    '@media (max-width: 576px)': {
+                      fontSize: rem(20),
+                      lineHeight: em(24),
+                    },
                   },
                 }),
               },
