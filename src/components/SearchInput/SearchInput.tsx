@@ -13,6 +13,7 @@ const SearchInput: React.FC<Props> = ({value, onChange}) => {
   const [search, setSearch] = useState<string>(value);
   return (
     <Input
+      data-elem="search-input"
       icon={<SearchIcon />}
       radius={8}
       size="lg"
@@ -24,6 +25,7 @@ const SearchInput: React.FC<Props> = ({value, onChange}) => {
       iconWidth={36}
       rightSection={
         <Button
+          data-elem="search-button"
           variant="filled"
           bg="blue.4"
           style={{fontWeight: 500, fontSize: 14}}

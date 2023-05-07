@@ -71,6 +71,7 @@ const Filters: React.FC<Props> = ({onFilterChanged}) => {
         <Flex direction="column" gap={8}>
           <Text className={classes.text}>Отрасль</Text>
           <Select
+            data-elem="industry-select"
             size="md"
             radius={8}
             className={classes.input}
@@ -86,6 +87,7 @@ const Filters: React.FC<Props> = ({onFilterChanged}) => {
         <Flex direction="column" gap={8}>
           <Text className={classes.text}>Оклад</Text>
           <Select
+            data-elem="salary-from-input"
             size="md"
             radius={8}
             className={classes.input}
@@ -103,6 +105,7 @@ const Filters: React.FC<Props> = ({onFilterChanged}) => {
             ]}
           />
           <Select
+            data-elem="salary-to-input"
             size="md"
             radius={8}
             placeholder="До"
@@ -121,6 +124,7 @@ const Filters: React.FC<Props> = ({onFilterChanged}) => {
           />
         </Flex>
         <Button
+          data-elem="search-button"
           variant="filled"
           bg="blue.4"
           style={{fontWeight: 500, fontSize: 14, height: 40}}

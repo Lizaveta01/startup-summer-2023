@@ -16,8 +16,11 @@ const VacancyItem: React.FC<Props> = ({vacancy, isBookmarked, onClickAdd, onClic
   const {classes, cx} = useStyles();
 
   return (
-    <Flex justify={'flex-start'} align={'center'} className={classes.wrapper}>
-      <Box className={classes.iconWrapper} onClick={isBookmarked ? onClickRemove : onClickAdd}>
+    <Flex justify={'flex-start'} align={'center'} className={classes.wrapper} data-elem={`vacancy-${vacancy.id}`}>
+      <Box
+        className={classes.iconWrapper}
+        onClick={isBookmarked ? onClickRemove : onClickAdd}
+        data-elem={`vacancy-${vacancy.id}-shortlist-button`}>
         <StarIcon color={isBookmarked ? '#5E96FC' : '#ACADB9'} fill={isBookmarked ? '#5E96FC' : 'none'} />
       </Box>
       <Stack spacing={12.5}>
