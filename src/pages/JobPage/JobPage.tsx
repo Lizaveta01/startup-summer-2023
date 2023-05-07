@@ -2,8 +2,9 @@ import {useCallback, useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 
 import {LocationIcon, StarIcon} from '@assets';
+import {DESIGN_EXAMPLE_WINDOW_HEIGHT, HEADER_HEIGHT} from '@constants';
 import {useBookmarks} from '@hooks';
-import {Box, createStyles, Flex, List, Stack, Text, Title} from '@mantine/core';
+import {Box, createStyles, Flex, List, Loader, Stack, Text, Title} from '@mantine/core';
 import {getVacancy} from '@services';
 import {IVacancy} from '@types';
 import {responsiveWidth} from '@utils';
@@ -12,6 +13,7 @@ const JobPage = () => {
   const {vacancyID} = useParams();
   const {classes, cx} = useStyles();
   const [vacancy, setVacancy] = useState<IVacancy | null>();
+  const [isLoading, setIsLoading] = useState(false);
   const {addToBookmarks, removeFromBookmarks, checkBookmarks} = useBookmarks();
 
   const getItems = (itemsType?: string) => {
@@ -20,10 +22,14 @@ const JobPage = () => {
 
   const getVacancyFromServer = useCallback(async () => {
     try {
+      setIsLoading(true);
       getVacancy(vacancyID!).then((data) => {
+        setIsLoading(false);
         setVacancy(data);
       });
-    } catch {}
+    } catch {
+      setIsLoading(false);
+    }
   }, [vacancyID]);
 
   useEffect(() => {
@@ -32,6 +38,11 @@ const JobPage = () => {
 
   return (
     <Flex justify="center" align="center" direction="column" bg="gray.1" h={'100%'}>
+      {isLoading && (
+        <Flex h={`${100 - (HEADER_HEIGHT / DESIGN_EXAMPLE_WINDOW_HEIGHT) * 100}vh`}>
+          <Loader color="blue.4" />
+        </Flex>
+      )}
       {vacancy && (
         <Flex justify="flex-start" align="center" direction="column" gap={20} pb={51} pt={40}>
           <Flex justify={'flex-start'} align={'center'} className={classes.wrapper} pos="relative" gap={16}>

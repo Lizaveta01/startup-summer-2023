@@ -9,7 +9,7 @@ const NotFoundComponent = () => {
       <Image maw={240} mx="auto" src={img} alt="not foud" />
       <Text sx={{fontSize: 24, fontWeight: 600}}>Упс, здесь еще ничего нет!</Text>
       <Button
-        href="/bookmarks"
+        href="/"
         component="a"
         bg="blue.0"
         c="blue.5"

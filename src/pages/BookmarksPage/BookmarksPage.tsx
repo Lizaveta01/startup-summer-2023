@@ -1,7 +1,7 @@
 import {useState} from 'react';
 
 import {NotFoundComponent, VacancyItem} from '@components';
-import {DESIGN_EXAMPLE_WINDOW_HEIGHT, HEADER_HEIGHT} from '@constants';
+import {DESIGN_EXAMPLE_WINDOW_HEIGHT, HEADER_HEIGHT, VACANCIES_COUNT_ON_PAGE} from '@constants';
 import {useBookmarks} from '@hooks';
 import {Flex, Pagination} from '@mantine/core';
 import {responsiveWidth} from '@utils';
@@ -9,6 +9,12 @@ import {responsiveWidth} from '@utils';
 const BookmarksPage = () => {
   const [activePage, setPage] = useState(1);
   const {addToBookmarks, removeFromBookmarks, bookmarks} = useBookmarks();
+  const [total, setTotal] = useState(Math.ceil(bookmarks.length / VACANCIES_COUNT_ON_PAGE));
+
+  const displayedBookmarks = bookmarks.slice(
+    (activePage - 1) * VACANCIES_COUNT_ON_PAGE,
+    activePage * VACANCIES_COUNT_ON_PAGE,
+  );
 
   return (
     <Flex
@@ -20,7 +26,7 @@ const BookmarksPage = () => {
       {bookmarks.length > 0 ? (
         <Flex direction="column" justify="flex-start" align="center" gap={104}>
           <Flex direction="column" gap={16}>
-            {bookmarks.map((item) => (
+            {displayedBookmarks.map((item) => (
               <VacancyItem
                 key={item.id}
                 vacancy={item}
@@ -30,9 +36,9 @@ const BookmarksPage = () => {
               />
             ))}
           </Flex>
-          {bookmarks.length > 4 && (
+          {bookmarks.length > VACANCIES_COUNT_ON_PAGE && (
             <Pagination
-              total={3}
+              total={total}
               value={activePage}
               onChange={setPage}
               color="blue.4"

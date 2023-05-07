@@ -26,7 +26,7 @@ const VacancyItem: React.FC<Props> = ({vacancy, isBookmarked, onClickAdd, onClic
       <Stack spacing={12.5}>
         <Text
           component={Link}
-          to={`vacancy/${vacancy.id}`}
+          to={`/vacancy/${vacancy.id}`}
           variant="link"
           className={classes.link}
           size="s"

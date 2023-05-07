@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useState} from 'react';
 
-import {Filters, SearchInput, VacancyItem} from '@components';
+import {Filters, NotFoundComponent, SearchInput, VacancyItem} from '@components';
 import {DESIGN_EXAMPLE_WINDOW_HEIGHT, HEADER_HEIGHT, MAX_API_VACANCIES, VACANCIES_COUNT_ON_PAGE} from '@constants';
 import {useBookmarks} from '@hooks';
 import {Flex, Loader, Pagination} from '@mantine/core';
@@ -8,10 +8,13 @@ import {getVacancies} from '@services';
 import {IFilters, IVacancy} from '@types';
 import {responsiveWidth} from '@utils';
 
+const TOTAL_PAGES = MAX_API_VACANCIES / VACANCIES_COUNT_ON_PAGE;
+
 const HomePage = () => {
   const [activePage, setPage] = useState(1);
   const [vacancies, setVacancies] = useState<IVacancy[] | null>(null);
   const [search, setSearch] = useState('');
+  const [total, setTotal] = useState(TOTAL_PAGES);
   const {addToBookmarks, removeFromBookmarks, checkBookmarks} = useBookmarks();
   const [filters, setFilters] = useState<IFilters | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
@@ -21,6 +24,9 @@ const HomePage = () => {
       setIsLoading(true);
       getVacancies({search: search, page: activePage, ...filters}).then((data) => {
         setVacancies(data?.objects);
+        data.total / VACANCIES_COUNT_ON_PAGE > MAX_API_VACANCIES
+          ? setTotal(TOTAL_PAGES)
+          : setTotal(data.total / VACANCIES_COUNT_ON_PAGE);
         setIsLoading(false);
       });
     } catch (e) {
@@ -51,7 +57,7 @@ const HomePage = () => {
             <Flex h={596}>
               <Loader color="blue.4" />
             </Flex>
-          ) : (
+          ) : vacancies?.length ? (
             <>
               {vacancies &&
                 vacancies.map((item) => (
@@ -64,11 +70,15 @@ const HomePage = () => {
                   />
                 ))}
             </>
+          ) : (
+            <Flex align={'center'} justify="center" h={596}>
+              <NotFoundComponent />
+            </Flex>
           )}
         </Flex>
-        {!isLoading && (
+        {isLoading ? null : vacancies?.length ? (
           <Pagination
-            total={MAX_API_VACANCIES / VACANCIES_COUNT_ON_PAGE}
+            total={total}
             value={activePage}
             onChange={setPage}
             color="blue.4"
@@ -80,7 +90,7 @@ const HomePage = () => {
               },
             })}
           />
-        )}
+        ) : null}
       </Flex>
     </Flex>
   );
