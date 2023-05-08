@@ -57,7 +57,7 @@ const useStyles = createStyles((theme) => ({
     position: 'relative',
 
     [`@media (max-width: ${Screens.TABLET}px)`]: {
-      width: '100%',
+      width: '90vw',
       padding: 12,
     },
   },

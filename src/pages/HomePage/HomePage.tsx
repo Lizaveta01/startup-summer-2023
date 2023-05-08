@@ -57,8 +57,8 @@ const HomePage = () => {
       bg="gray.1"
       h={`${100 - (HEADER_HEIGHT / DESIGN_EXAMPLE_WINDOW_HEIGHT) * 100}vh`}>
       <Flex>{!isTablet && <Filters onFilterChanged={setFilters} />}</Flex>
-      <Flex direction="column" justify="center" align="center" gap={40} pr={isTablet ? 10 : 0} w={'100%'}>
-        <Flex direction="column" gap={16} justify="center" align="center" w={'100%'}>
+      <Flex direction="column" justify="center" align="center" gap={40} pr={isTablet ? 10 : 0}>
+        <Flex direction="column" gap={16} justify="center" align="center">
           <Flex justify="center" align="center" gap={10} w={'100%'}>
             <SearchInput value={search} onChange={setSearch} />
             {isTablet && (
