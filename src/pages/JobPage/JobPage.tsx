@@ -67,7 +67,7 @@ const JobPage = () => {
                 <Text size="s">{vacancy.type_of_work.title}</Text>
               </Flex>
 
-              <Flex gap={responsiveWidth(8)}>
+              <Flex gap={responsiveWidth(8)} align="center">
                 <LocationIcon />
                 <Text size="xs">{vacancy.town.title}</Text>
               </Flex>

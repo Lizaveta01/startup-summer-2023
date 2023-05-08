@@ -5,7 +5,7 @@ import {Button, createStyles, Flex, Select, Text} from '@mantine/core';
 import {getCatalogues} from '@services';
 import {IFilters} from '@types';
 
-interface IICatalogueItem {
+interface ICatalogueItem {
   value: string;
   label: string;
 }
@@ -28,7 +28,7 @@ const Filters: React.FC<Props> = ({onFilterChanged}) => {
   const [category, setCategory] = useState<string | null>(null);
   const [paymentFrom, setPaymentFrom] = useState<string | null>(null);
   const [paymentTo, setPaymentTo] = useState<string | null>(null);
-  const [categories, setCategories] = useState<IICatalogueItem[]>([]);
+  const [categories, setCategories] = useState<ICatalogueItem[]>([]);
 
   const reset = () => {
     setCategory(null);
@@ -151,6 +151,9 @@ const useStyles = createStyles((theme) => ({
   },
   input: {
     width: 275,
+    '& .mantine-select-item--selected': {
+      backgroundColor: 'red',
+    },
   },
 }));
 
