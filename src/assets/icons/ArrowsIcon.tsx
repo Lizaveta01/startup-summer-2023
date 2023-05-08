@@ -1,6 +1,8 @@
 import * as React from 'react';
 
-const ArrowsIcon: React.FC<{color?: string}> = ({color = '#ACADB9'}) => (
+import {Colors} from '@constants';
+
+const ArrowsIcon: React.FC<{color?: string}> = ({color = Colors.GRAY_4}) => (
   <svg width={12} height={26} viewBox="0 0 12 26" fill="none">
     <path
       d="M9.50006 7.5L6.39054 4.83469C6.16584 4.6421 5.83428 4.6421 5.60959 4.83469L2.50006 7.5"

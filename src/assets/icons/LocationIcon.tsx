@@ -1,6 +1,8 @@
 import * as React from 'react';
 
-const LocationIcon: React.FC<{color?: string}> = ({color = '#ACADB9'}) => (
+import {Colors} from '@constants';
+
+const LocationIcon: React.FC<{color?: string}> = ({color = Colors.GRAY_4}) => (
   <svg width={20} height={20} viewBox="0 0 20 20" fill="none">
     <path
       d="M14.714 13.8807C13.9335 14.6612 12.3013 16.2935 11.1781 17.4166C10.5273 18.0675 9.47304 18.0678 8.82217 17.4169C7.7186 16.3134 6.11797 14.7127 5.28593 13.8807C2.68244 11.2772 2.68244 7.05612 5.28593 4.45262C7.88943 1.84913 12.1105 1.84913 14.714 4.45262C17.3175 7.05612 17.3175 11.2772 14.714 13.8807Z"

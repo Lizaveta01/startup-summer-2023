@@ -2,28 +2,33 @@ import {useCallback, useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 
 import {LocationIcon, StarIcon} from '@assets';
+import {Colors, DESIGN_EXAMPLE_WINDOW_HEIGHT, HEADER_HEIGHT, Screens} from '@constants';
 import {useBookmarks} from '@hooks';
-import {Box, createStyles, Flex, List, Stack, Text, Title} from '@mantine/core';
+import {Box, createStyles, Flex, Loader, Stack, Text} from '@mantine/core';
 import {getVacancy} from '@services';
 import {IVacancy} from '@types';
 import {responsiveWidth} from '@utils';
+import parse from 'html-react-parser';
+
+import './styles.scss';
 
 const JobPage = () => {
   const {vacancyID} = useParams();
-  const {classes, cx} = useStyles();
+  const {classes} = useStyles();
   const [vacancy, setVacancy] = useState<IVacancy | null>();
+  const [isLoading, setIsLoading] = useState(false);
   const {addToBookmarks, removeFromBookmarks, checkBookmarks} = useBookmarks();
-
-  const getItems = (itemsType?: string) => {
-    return itemsType!.split('\n').map((item, index) => <List.Item key={index}>{item.slice(2)}</List.Item>);
-  };
 
   const getVacancyFromServer = useCallback(async () => {
     try {
+      setIsLoading(true);
       getVacancy(vacancyID!).then((data) => {
+        setIsLoading(false);
         setVacancy(data);
       });
-    } catch {}
+    } catch {
+      setIsLoading(false);
+    }
   }, [vacancyID]);
 
   useEffect(() => {
@@ -31,63 +36,45 @@ const JobPage = () => {
   }, [getVacancyFromServer]);
 
   return (
-    <Flex justify="center" align="center" direction="column" bg="gray.1" h={'100%'}>
+    <Flex justify="flex-start" align="center" direction="column" bg="gray.1" h={'100%'} mih={'100vh'}>
+      {isLoading && (
+        <Flex h={`${100 - (HEADER_HEIGHT / DESIGN_EXAMPLE_WINDOW_HEIGHT) * 100}vh`}>
+          <Loader color="blue.4" />
+        </Flex>
+      )}
       {vacancy && (
         <Flex justify="flex-start" align="center" direction="column" gap={20} pb={51} pt={40}>
-          <Flex justify={'flex-start'} align={'center'} className={classes.wrapper} pos="relative" gap={16}>
+          <Flex justify="flex-start" align="center" className={classes.wrapper}>
             <Box
               className={classes.iconWrapper}
               onClick={() => {
                 checkBookmarks(vacancy) ? removeFromBookmarks(vacancy) : addToBookmarks(vacancy);
               }}>
               <StarIcon
-                color={checkBookmarks(vacancy) ? '#5E96FC' : '#ACADB9'}
-                fill={checkBookmarks(vacancy) ? '#5E96FC' : 'none'}
+                color={checkBookmarks(vacancy) ? Colors.BLUE_4 : Colors.GRAY_4}
+                fill={checkBookmarks(vacancy) ? Colors.BLUE_4 : 'none'}
               />
             </Box>
             <Stack spacing={12.5}>
-              <Text className={classes.textBold} size="l" maw={responsiveWidth(675)}>
+              <Text size="l" pr={20} weight={600}>
                 {vacancy.profession}
               </Text>
-              <Flex gap={responsiveWidth(12)} justify={'flex-start'} align={'center'}>
-                <Text className={cx(classes.title, classes.textBold)}>
-                  з/п от {vacancy.payment} {vacancy.currency}
+              <Flex gap={responsiveWidth(12)} justify="flex-start" align="center">
+                <Text size="s" weight={600}>
+                  з/п от {vacancy.payment_from} {vacancy.currency}
                 </Text>
                 <Text className={classes.circle}>•</Text>
-                <Text className={classes.title}>{vacancy.type_of_work.title}</Text>
+                <Text size="s">{vacancy.type_of_work.title}</Text>
               </Flex>
 
-              <Flex gap={responsiveWidth(8)}>
+              <Flex gap={responsiveWidth(8)} align="center">
                 <LocationIcon />
-                <Text styles={classes.text}>{vacancy.town.title}</Text>
+                <Text size="xs">{vacancy.town.title}</Text>
               </Flex>
             </Stack>
           </Flex>
-          <Flex justify={'flex-start'} align={'flex-start'} className={classes.wrapper} direction="column">
-            {vacancy.work && (
-              <Flex gap={responsiveWidth(16)} direction="column">
-                <Title size="s" className={classes.title}>
-                  Обязанности:
-                </Title>
-                <List>{getItems(vacancy.work)}</List>
-              </Flex>
-            )}
-            {vacancy.candidat && (
-              <Flex gap={responsiveWidth(16)} direction="column">
-                <Title size="s" className={classes.title}>
-                  Требования:
-                </Title>
-                <List>{getItems(vacancy.candidat)}</List>
-              </Flex>
-            )}
-            {vacancy.compensation && (
-              <Flex gap={responsiveWidth(16)} direction="column">
-                <Title size="s" className={classes.title}>
-                  Условия:
-                </Title>
-                <List>{getItems(vacancy.compensation)}</List>
-              </Flex>
-            )}
+          <Flex justify="flex-start" align="flex-start" className={classes.wrapper} direction="column">
+            {parse(vacancy.vacancyRichText.replace(/-/g, '•'))}
           </Flex>
         </Flex>
       )}
@@ -97,31 +84,25 @@ const JobPage = () => {
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
-    gap: 20,
     width: responsiveWidth(773),
     backgroundColor: theme.colors.gray[0],
     borderRadius: 12,
     borderWidth: 1,
     borderColor: theme.colors.gray[2],
     padding: 24,
+    position: 'relative',
+    gap: 16,
+
+    [`@media (max-width: ${Screens.TABLET}px)`]: {
+      width: '100%',
+      padding: 12,
+    },
   },
   link: {
     fontWeight: 600,
     color: theme.colors.blue[4],
     cursor: 'pointer',
-    lineHeight: '24.2px',
-  },
-  text: {
-    fontWeight: 400,
-    fontSize: 16,
-    lineHeight: '19px',
-  },
-  textBold: {
-    fontWeight: 600,
-  },
-  title: {
-    fontSize: 20,
-    lineHeight: '20px',
+    lineHeight: '24px',
   },
   iconWrapper: {
     position: 'absolute',
