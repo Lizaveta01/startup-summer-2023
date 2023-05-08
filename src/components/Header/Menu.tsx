@@ -1,20 +1,17 @@
-import {useState} from 'react';
 import {Link} from 'react-router-dom';
 
 import {createStyles, Text} from '@mantine/core';
 
-enum Pages {
-  SEARCH = 'Search',
-  BOOKMARKS = 'Bookmarks',
-}
+import {Pages} from './Header';
 
 type Props = {
+  mainPage: string;
+  setMainPage: (page: Pages) => void;
   toggle?: () => void;
 };
 
-const Menu: React.FC<Props> = ({toggle}) => {
+const Menu: React.FC<Props> = ({toggle, mainPage, setMainPage}) => {
   const {classes, cx} = useStyles();
-  const [mainPage, setMainPage] = useState<Pages>(Pages.SEARCH);
 
   return (
     <>
