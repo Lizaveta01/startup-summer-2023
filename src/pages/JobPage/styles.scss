@@ -1,0 +1,41 @@
+p {
+    margin: 0;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 140%;
+    padding-left: 10px;
+    b {
+        font-size: 20px;
+        line-height: 20px;
+        margin: 0;
+        margin: 20px  -10px 16px 0px; 
+        
+        @media screen and (max-width: 578px) {
+            font-size: 16px;
+            line-height: 48px;
+          }
+    }
+}
+
+b:first-of-type  {
+    font-size: 20px;
+    line-height: 20px;
+    margin: 0;
+    margin-bottom: 16px;
+    @media screen and (max-width: 578px) {
+        font-size: 16px;
+      }
+}
+
+b {
+    font-size: 20px;
+    line-height: 20px;
+    margin: 20px 0 16px 0; 
+    @media screen and (max-width: 578px) {
+        font-size: 16px;
+      }
+}
+
+ul {
+    margin: 0;
+}

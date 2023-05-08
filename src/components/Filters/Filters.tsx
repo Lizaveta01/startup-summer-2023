@@ -9,6 +9,7 @@ interface IICatalogueItem {
   value: string;
   label: string;
 }
+
 type Props = {
   onFilterChanged: (filters: IFilters) => void;
 };
@@ -40,13 +41,14 @@ const Filters: React.FC<Props> = ({onFilterChanged}) => {
       await getCatalogues().then((catalogues) => {
         setCategories(
           catalogues.map((item) => ({
-            value: item.key + '',
+            value: `${item.key}`,
             label: item.title,
           })),
         );
       });
     } catch (err) {}
   };
+
   useEffect(() => {
     getCategories();
   }, []);
@@ -60,7 +62,7 @@ const Filters: React.FC<Props> = ({onFilterChanged}) => {
   };
 
   return (
-    <Flex justify={'flex-start'} align={'flex-start'} direction="column" className={classes.wrapper}>
+    <Flex justify="flex-start" align="flex-start" direction="column" className={classes.wrapper}>
       <Flex justify="space-between" align="center" w={275}>
         <Text className={classes.text} size="s">
           Фильтры
@@ -145,7 +147,7 @@ const useStyles = createStyles((theme) => ({
   },
   text: {
     fontWeight: 700,
-    lineHeight: '1.1875rem',
+    lineHeight: '19px',
   },
   input: {
     width: 275,

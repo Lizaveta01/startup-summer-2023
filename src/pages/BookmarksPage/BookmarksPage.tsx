@@ -54,7 +54,7 @@ const BookmarksPage = () => {
           )}
         </Flex>
       ) : (
-        <Flex align={'center'}>
+        <Flex align="center">
           <NotFoundComponent />
         </Flex>
       )}

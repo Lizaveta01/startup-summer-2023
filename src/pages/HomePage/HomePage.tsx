@@ -2,7 +2,13 @@ import {useCallback, useEffect, useState} from 'react';
 
 import {FiltersIcon} from '@assets';
 import {Filters, NotFoundComponent, SearchInput, VacancyItem} from '@components';
-import {DESIGN_EXAMPLE_WINDOW_HEIGHT, HEADER_HEIGHT, MAX_API_VACANCIES, VACANCIES_COUNT_ON_PAGE} from '@constants';
+import {
+  DESIGN_EXAMPLE_WINDOW_HEIGHT,
+  HEADER_HEIGHT,
+  MAX_API_VACANCIES,
+  Screens,
+  VACANCIES_COUNT_ON_PAGE,
+} from '@constants';
 import {useBookmarks} from '@hooks';
 import {ActionIcon, Drawer, Flex, Loader, Pagination} from '@mantine/core';
 import {useDisclosure, useMediaQuery} from '@mantine/hooks';
@@ -21,7 +27,7 @@ const HomePage = () => {
   const [filters, setFilters] = useState<IFilters | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
   const [opened, {toggle}] = useDisclosure(false);
-  const isMobile = useMediaQuery('(max-width: 758px)');
+  const isTablet = useMediaQuery(`(max-width: ${Screens.TABLET}px)`);
 
   const getVacanciesRequest = useCallback(() => {
     try {
@@ -50,12 +56,12 @@ const HomePage = () => {
       pt={40}
       bg="gray.1"
       h={`${100 - (HEADER_HEIGHT / DESIGN_EXAMPLE_WINDOW_HEIGHT) * 100}vh`}>
-      <Flex>{!isMobile && <Filters onFilterChanged={setFilters} />}</Flex>
-      <Flex direction="column" justify="center" align="center" gap={40} pr={isMobile ? 10 : 0}>
-        <Flex direction="column" gap={16} justify="center" align="center">
-          <Flex justify={'center'} align={'center'} gap={10} w={'100%'}>
+      <Flex>{!isTablet && <Filters onFilterChanged={setFilters} />}</Flex>
+      <Flex direction="column" justify="center" align="center" gap={40} pr={isTablet ? 10 : 0}>
+        <Flex direction="column" gap={16} justify="center" align="center" miw={'90vw'}>
+          <Flex justify="center" align="center" gap={10} w={'100%'}>
             <SearchInput value={search} onChange={setSearch} />
-            {isMobile && (
+            {isTablet && (
               <ActionIcon variant="filled" onClick={toggle} bg={'blue.4'}>
                 <FiltersIcon />
               </ActionIcon>
@@ -80,7 +86,7 @@ const HomePage = () => {
                 ))}
             </>
           ) : (
-            <Flex align={'center'} justify="center" h={596}>
+            <Flex align="center" justify="center" h={596}>
               <NotFoundComponent />
             </Flex>
           )}
@@ -103,7 +109,7 @@ const HomePage = () => {
         ) : null}
       </Flex>
       <Drawer opened={opened} onClose={toggle} position="top">
-        <Flex justify={'center'}>
+        <Flex justify="center">
           <Filters onFilterChanged={setFilters} />
         </Flex>
       </Drawer>

@@ -5,7 +5,6 @@ import axios from 'axios';
 
 const login = async () => {
   try {
-    console.log('api', API_PATH.auth);
     const response: IAuthResponse = await axios
       .get(API_PATH.auth, {
         headers: {
@@ -13,7 +12,6 @@ const login = async () => {
         },
       })
       .then((response) => {
-        console.log('response', response.data);
         return response.data;
       })
       .catch((error) => {
